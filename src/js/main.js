@@ -35,7 +35,7 @@ const createMovieElement = (movie) => {
 
 addToFavorites.addEventListener("click", ()=> {
     favorites.push(movie);
-    window.localStorage.setItem("movie", JSON.stringify(movie));
+    window.localStorage.setItem("movies", JSON.stringify(favorites));
 })
   divEl.appendChild(poster);
   divEl.appendChild(title);
@@ -45,9 +45,6 @@ addToFavorites.addEventListener("click", ()=> {
 
   moviesSection.appendChild(divEl);
 };
-
-//getLocalFavorites
-//window.localStorage.length
 
 favorites.map(movie => createMovieElement(movie));
 
