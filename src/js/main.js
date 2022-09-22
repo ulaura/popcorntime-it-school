@@ -1,61 +1,10 @@
-const API_URL = "https://api.themoviedb.org/3";
-const POSTER_PATH = "https://image.tmdb.org/t/p/original";
-const API_KEY = "35ab6d12331f50dd5c82138038e1b272";
+import { createMovieElement } from './createElement';
+import { getData, localStorageService } from './services';
 
 const searchElement = document.querySelector("#movieSearch");
 const moviesSection = document.querySelector("#movies");
 
-if(window.localStorage.getItem("movies") === null){
-window.localStorage.setItem("movies", JSON.stringify([]));
-}
-
-const favorites = JSON.parse(window.localStorage.getItem("movies"));
-
-const getData = async (query) => {
-  const movies = await fetch(
-    `${API_URL}/search/movie?api_key=${API_KEY}&query=${query}`
-  );
-  return movies.json();
-};
-
-const createMovieElement = (movie) => {
-  const divEl = document.createElement("div");
-  const title = document.createElement("h2");
-  const description = document.createElement("p");
-  const movieIdEl = document.createElement("span");
-  const poster = document.createElement("img");
-  const addToFavorites = document.createElement("button");
-
-  poster.src = `${POSTER_PATH}/${movie.poster_path}`;
-
-  //Set styling
-  divEl.classList.add('movie','flex', 'flex-col', 'content-center');
-  poster.classList.add('h-80', 'rounded-lg', 'object-cover');
-  poster.classList.add('rounded-lg');
-
-  title.classList.add('text-4xl', 'font-bold', 'my-4');
-  description.classList.add('text-sm');
-  addToFavorites.classList.add('bg-slate-500', 'rounded-lg', 'p-2', 'text-neutral-200');
-  
-  title.textContent = movie.title;
-  description.textContent = movie.overview;
-  movieIdEl.textContent = movie.id;
-  addToFavorites.textContent= "❤ Add to favorites";
-
-addToFavorites.addEventListener("click", ()=> {
-    favorites.push(movie);
-    window.localStorage.setItem("movies", JSON.stringify(favorites));
-})
-  divEl.appendChild(poster);
-  divEl.appendChild(title);
-  divEl.appendChild(description);
-  divEl.appendChild(movieIdEl);
-  divEl.appendChild(addToFavorites);
-
-  moviesSection.appendChild(divEl);
-};
-
-// favorites.map(movie => createMovieElement(movie));
+localStorageService.initializeData();
 
 
 searchElement.addEventListener("change", async (e) => {
@@ -63,5 +12,9 @@ searchElement.addEventListener("change", async (e) => {
   const { results } = await getData(value);
 
   moviesSection.innerHTML = "";
-  results.map((item) => createMovieElement(item));
+  
+  results?.map((item) => {
+    const movieEl = createMovieElement(item);
+    moviesSection.appendChild(movieEl);
+  });
 });
