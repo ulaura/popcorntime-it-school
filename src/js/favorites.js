@@ -9,6 +9,6 @@ let favorites = localStorageService.getData();
 
 favorites.map(movie => {
   favorites.map(movie => createMovieElement(movie));
-  const movieEl = 
+  const movieEl = createMovieElement(movie, false); 
   moviesSection.appendChild(movieEl);
 })

@@ -27,23 +27,24 @@ export const createMovieElement = (movie, canAdd = true) => {
 
   if(canAdd){
     favoriteButton.addEventListener("click", () => {
-        //TODO figure out a better way of checking if movie already exists
+        //TODO figure out a better method of checking if movie already exists
         const exists = localStorageService.getData().includes(movie);
+        //console.log(exists);
         if(!exists){
-            localStorageService.setData([...localStorageService.getData(),movie]);
+            localStorageService.setData([...localStorageService.getData(), movie]);
         }
     })
    } else {
     favoriteButton.addEventListener("click", ()=> {
         // const newArray = favorites.filter(el => el !== movie);
         // favorites = [...newArray];
-        localStorageService.setData(favorites.filter(el => el !==movie));
+        localStorageService.setData(favorites.filter(el => el.id !== movie));
         moviesSection.innerHTML = "";
         localStorageService.getData().map(movie => {
             const movieEl = createMovieElement(movie, false);
             moviesSection.appendChild(movieEl);
-        })
-    })
+        });
+    });
 }
     divEl.appendChild(poster);
     divEl.appendChild(title);

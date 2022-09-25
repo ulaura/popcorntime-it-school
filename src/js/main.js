@@ -12,8 +12,8 @@ searchElement.addEventListener("change", async (e) => {
   const { results } = await getData(value);
 
   moviesSection.innerHTML = "";
-  
-  results?.map((item) => {
+
+  results.map((item) => {
     const movieEl = createMovieElement(item);
     moviesSection.appendChild(movieEl);
   });
